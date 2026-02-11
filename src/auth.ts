@@ -96,7 +96,9 @@ export class Auth {
       srv.listen(PORT, HOST, () => {
         console.log(`Login to Dify: ${this.url}`);
         console.log("Waiting for browser extension...");
-        this.open(this.url);
+        setTimeout(() => {
+          if (!done) this.open(this.url);
+        }, 3000);
       });
 
       // Timeout 10 min
