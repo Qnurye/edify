@@ -59,13 +59,13 @@ export class Config {
       const data: StoredConfig = JSON.parse(readFileSync(path, "utf-8"));
 
       return {
-        url: data.url || DEFAULT_URL,
+        url: process.env.DIFY_BASE_URL || data.url || DEFAULT_URL,
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
         csrfToken: data.csrfToken,
       };
     } catch {
-      return { url: DEFAULT_URL };
+      return { url: process.env.DIFY_BASE_URL || DEFAULT_URL };
     }
   }
 

@@ -21,19 +21,22 @@ cli
 cli
   .command("login")
   .description("Login via email/password or browser extension")
-  .option("--email <email>", "Email address")
-  .action(async (opts: { email?: string }) => {
+  .option("--email <email>", "Email address (env: DIFY_EMAIL)")
+  .option("--password <password>", "Password (env: DIFY_PASSWORD)")
+  .action(async (opts: { email?: string; password?: string }) => {
     const cfg = Config.load();
     try {
       let tokens;
+      const email = opts.email || process.env.DIFY_EMAIL;
+      const pw = opts.password || process.env.DIFY_PASSWORD;
 
-      if (opts.email) {
-        const pw = await prompt("Password: ");
-        if (!pw) {
+      if (email) {
+        const password = pw || await prompt("Password: ");
+        if (!password) {
           console.error("❌ Password cannot be empty");
           process.exit(1);
         }
-        tokens = await Auth.password(cfg.url, opts.email, pw);
+        tokens = await Auth.password(cfg.url, email, password);
       } else {
         const auth = new Auth(cfg.url);
         tokens = await auth.run();
