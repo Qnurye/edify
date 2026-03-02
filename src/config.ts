@@ -132,7 +132,7 @@ export class Config {
    * Check if has valid tokens
    */
   static ok(cfg: EnvConfig): boolean {
-    return !!(cfg.accessToken && cfg.refreshToken);
+    return !!cfg.accessToken;
   }
 
   /**
